@@ -1,0 +1,223 @@
+{
+  "horizon_days": 7,
+  "series_evaluated": 400,
+  "metrics": {
+    "seasonal_naive": {
+      "mae": 0.321,
+      "rmse": 0.4322,
+      "wape": 0.2661,
+      "smape": 0.3524,
+      "bias": 0.0191
+    },
+    "prophet": {
+      "mae": 0.2935,
+      "rmse": 0.3941,
+      "wape": 0.2433,
+      "smape": 0.3303,
+      "bias": 0.0167
+    },
+    "lstm": {
+      "mae": 0.2989,
+      "rmse": 0.399,
+      "wape": 0.2478,
+      "smape": 0.3342,
+      "bias": 0.0427
+    },
+    "ensemble": {
+      "mae": 0.2952,
+      "rmse": 0.3949,
+      "wape": 0.2447,
+      "smape": 0.3316,
+      "bias": 0.0297
+    }
+  },
+  "per_category_wape": [
+    {
+      "first_category_id": 0,
+      "taxonomy": "vegetables",
+      "series": 13,
+      "seasonal_naive": 0.2416,
+      "prophet": 0.2243,
+      "lstm": 0.2345,
+      "ensemble": 0.229
+    },
+    {
+      "first_category_id": 1,
+      "taxonomy": "fruits",
+      "series": 12,
+      "seasonal_naive": 0.2403,
+      "prophet": 0.2112,
+      "lstm": 0.218,
+      "ensemble": 0.2137
+    },
+    {
+      "first_category_id": 3,
+      "taxonomy": "dairy",
+      "series": 46,
+      "seasonal_naive": 0.2101,
+      "prophet": 0.1978,
+      "lstm": 0.2008,
+      "ensemble": 0.1987
+    },
+    {
+      "first_category_id": 4,
+      "taxonomy": "bakery",
+      "series": 42,
+      "seasonal_naive": 0.2846,
+      "prophet": 0.2587,
+      "lstm": 0.2574,
+      "ensemble": 0.2572
+    },
+    {
+      "first_category_id": 5,
+      "taxonomy": "prepared-deli",
+      "series": 26,
+      "seasonal_naive": 0.2581,
+      "prophet": 0.2294,
+      "lstm": 0.2247,
+      "ensemble": 0.226
+    },
+    {
+      "first_category_id": 6,
+      "taxonomy": "frozen",
+      "series": 21,
+      "seasonal_naive": 0.3362,
+      "prophet": 0.3184,
+      "lstm": 0.3295,
+      "ensemble": 0.3232
+    },
+    {
+      "first_category_id": 7,
+      "taxonomy": "sweets",
+      "series": 31,
+      "seasonal_naive": 0.3434,
+      "prophet": 0.3423,
+      "lstm": 0.3425,
+      "ensemble": 0.3423
+    },
+    {
+      "first_category_id": 8,
+      "taxonomy": "vegetables",
+      "series": 14,
+      "seasonal_naive": 0.3869,
+      "prophet": 0.3378,
+      "lstm": 0.3424,
+      "ensemble": 0.3389
+    },
+    {
+      "first_category_id": 9,
+      "taxonomy": "fruits",
+      "series": 44,
+      "seasonal_naive": 0.2995,
+      "prophet": 0.2755,
+      "lstm": 0.2865,
+      "ensemble": 0.2803
+    },
+    {
+      "first_category_id": 10,
+      "taxonomy": "meat-seafood",
+      "series": 22,
+      "seasonal_naive": 0.3155,
+      "prophet": 0.285,
+      "lstm": 0.284,
+      "ensemble": 0.2838
+    },
+    {
+      "first_category_id": 11,
+      "taxonomy": "dairy",
+      "series": 21,
+      "seasonal_naive": 0.3818,
+      "prophet": 0.3548,
+      "lstm": 0.3545,
+      "ensemble": 0.3538
+    },
+    {
+      "first_category_id": 12,
+      "taxonomy": "bakery",
+      "series": 36,
+      "seasonal_naive": 0.2358,
+      "prophet": 0.2106,
+      "lstm": 0.2179,
+      "ensemble": 0.2131
+    },
+    {
+      "first_category_id": 13,
+      "taxonomy": "prepared-deli",
+      "series": 38,
+      "seasonal_naive": 0.2853,
+      "prophet": 0.2546,
+      "lstm": 0.2615,
+      "ensemble": 0.2577
+    },
+    {
+      "first_category_id": 14,
+      "taxonomy": "frozen",
+      "series": 17,
+      "seasonal_naive": 0.2359,
+      "prophet": 0.2164,
+      "lstm": 0.2205,
+      "ensemble": 0.2169
+    },
+    {
+      "first_category_id": 15,
+      "taxonomy": "sweets",
+      "series": 17,
+      "seasonal_naive": 0.2605,
+      "prophet": 0.2337,
+      "lstm": 0.2494,
+      "ensemble": 0.2383
+    }
+  ],
+  "best_model": "prophet",
+  "ensemble_weights": {
+    "prophet": 0.505,
+    "lstm": 0.495
+  },
+  "notes": [
+    "Demand targets are stock-out corrected (latent demand).",
+    "Ensemble in the report is an equal-weight average; production uses inverse-WAPE weights."
+  ],
+  "evaluation_mode": "official eval split (next 7 days)",
+  "dataset": {
+    "rows": 45360,
+    "series": 504,
+    "stores": 12,
+    "products": 60,
+    "categories": 15,
+    "start": "2024-03-28",
+    "end": "2024-06-25",
+    "stockout_adjusted_share": null,
+    "mean_daily_demand": 1.2388
+  },
+  "trained_at": "2026-09-24T18:47:31.619936",
+  "train_seconds": 23.8,
+  "lstm_training_curve": [
+    {
+      "epoch": 1,
+      "train_loss": 0.0896,
+      "val_loss": 0.0815
+    },
+    {
+      "epoch": 2,
+      "train_loss": 0.0819,
+      "val_loss": 0.0801
+    },
+    {
+      "epoch": 3,
+      "train_loss": 0.08,
+      "val_loss": 0.0783
+    },
+    {
+      "epoch": 4,
+      "train_loss": 0.0791,
+      "val_loss": 0.0776
+    },
+    {
+      "epoch": 5,
+      "train_loss": 0.0785,
+      "val_loss": 0.0774
+    }
+  ],
+  "lstm_trained_series": 504,
+  "stockout_adjusted_rows": 8189
+}

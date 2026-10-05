@@ -1,0 +1,63 @@
+# Full stack: docker compose up --build
+#   Web app      http://localhost:8080
+#   API + Swagger http://localhost:8000/api/docs/
+#   ML service   http://localhost:8001/docs
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: foodbridge
+      POSTGRES_USER: foodbridge
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-foodbridge}
+    volumes: [pgdata:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U foodbridge"]
+      interval: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine          # shared dashboard cache across gunicorn workers
+
+  backend:
+    build: { context: ., dockerfile: backend/Dockerfile }
+    env_file: .env
+    environment:
+      POSTGRES_HOST: db
+      ML_SERVICE_URL: http://ml:8001
+      REDIS_URL: redis://redis:6379/0
+    depends_on:
+      db: { condition: service_healthy }
+      redis: { condition: service_started }
+    ports: ["8000:8000"]
+    command: ["web"]
+
+  scheduler:
+    build: { context: ., dockerfile: backend/Dockerfile }
+    env_file: .env
+    environment:
+      POSTGRES_HOST: db
+      ML_SERVICE_URL: http://ml:8001
+      REDIS_URL: redis://redis:6379/0
+    depends_on: [backend]
+    command: ["scheduler"]
+
+  ml:
+    build: { context: ., dockerfile: ml_service/Dockerfile }
+    env_file: .env
+    environment:
+      DJANGO_API_URL: http://backend:8000/api
+    volumes: [mlartifacts:/app/ml_service/artifacts]
+    ports: ["8001:8001"]
+
+  web:
+    build:
+      context: ./frontend
+      args:
+        API_BASE_URL: ${PUBLIC_API_URL:-http://localhost:8000/api}
+        ML_DOCS_URL: ${PUBLIC_ML_DOCS_URL:-http://localhost:8001/docs}
+    depends_on: [backend]
+    ports: ["8080:80"]
+
+volumes:
+  pgdata:
+  mlartifacts:

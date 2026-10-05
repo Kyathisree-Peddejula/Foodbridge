@@ -1,0 +1,40 @@
+[
+  {
+    "users": 100,
+    "requests": 1209,
+    "rps": 42.0,
+    "error_rate": 0.0,
+    "errors": {},
+    "p50_ms": 26.0,
+    "p95_ms": 479.4,
+    "p99_ms": 962.7,
+    "mean_ms": 81.4,
+    "slowest": [
+      {
+        "endpoint": "/predictions/risk/summary/",
+        "p95_ms": 931.3,
+        "n": 51
+      },
+      {
+        "endpoint": "/inventory/batches/",
+        "p95_ms": 800.5,
+        "n": 104
+      },
+      {
+        "endpoint": "/pickups/",
+        "p95_ms": 753.0,
+        "n": 69
+      },
+      {
+        "endpoint": "/pickups/calendar/",
+        "p95_ms": 592.3,
+        "n": 83
+      },
+      {
+        "endpoint": "/expiry/alerts/",
+        "p95_ms": 579.6,
+        "n": 50
+      }
+    ]
+  }
+]

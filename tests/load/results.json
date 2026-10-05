@@ -1,0 +1,154 @@
+[
+  {
+    "users": 5,
+    "requests": 2193,
+    "rps": 109.5,
+    "error_rate": 0.0,
+    "errors": {},
+    "p50_ms": 38.4,
+    "p95_ms": 104.2,
+    "p99_ms": 144.7,
+    "mean_ms": 45.6,
+    "slowest": [
+      {
+        "endpoint": "/analytics/business/",
+        "p95_ms": 134.1,
+        "n": 500
+      },
+      {
+        "endpoint": "/marketplace/listings/",
+        "p95_ms": 103.8,
+        "n": 212
+      },
+      {
+        "endpoint": "/inventory/batches/",
+        "p95_ms": 102.7,
+        "n": 349
+      },
+      {
+        "endpoint": "/inventory/scan/",
+        "p95_ms": 84.8,
+        "n": 75
+      },
+      {
+        "endpoint": "/predictions/risk/summary/",
+        "p95_ms": 75.6,
+        "n": 134
+      }
+    ]
+  },
+  {
+    "users": 10,
+    "requests": 1797,
+    "rps": 89.6,
+    "error_rate": 0.0,
+    "errors": {},
+    "p50_ms": 71.5,
+    "p95_ms": 321.8,
+    "p99_ms": 427.9,
+    "mean_ms": 111.5,
+    "slowest": [
+      {
+        "endpoint": "/analytics/business/",
+        "p95_ms": 406.7,
+        "n": 393
+      },
+      {
+        "endpoint": "/inventory/batches/",
+        "p95_ms": 332.1,
+        "n": 298
+      },
+      {
+        "endpoint": "/marketplace/listings/",
+        "p95_ms": 222.7,
+        "n": 165
+      },
+      {
+        "endpoint": "/inventory/scan/",
+        "p95_ms": 215.8,
+        "n": 74
+      },
+      {
+        "endpoint": "/expiry/alerts/",
+        "p95_ms": 207.5,
+        "n": 108
+      }
+    ]
+  },
+  {
+    "users": 25,
+    "requests": 1753,
+    "rps": 86.7,
+    "error_rate": 0.0,
+    "errors": {},
+    "p50_ms": 187.1,
+    "p95_ms": 983.1,
+    "p99_ms": 1444.9,
+    "mean_ms": 286.5,
+    "slowest": [
+      {
+        "endpoint": "/analytics/business/",
+        "p95_ms": 1553.4,
+        "n": 178
+      },
+      {
+        "endpoint": "/inventory/batches/",
+        "p95_ms": 1397.6,
+        "n": 139
+      },
+      {
+        "endpoint": "/marketplace/listings/",
+        "p95_ms": 710.0,
+        "n": 66
+      },
+      {
+        "endpoint": "/expiry/alerts/",
+        "p95_ms": 689.6,
+        "n": 47
+      },
+      {
+        "endpoint": "/analytics/admin/",
+        "p95_ms": 667.1,
+        "n": 50
+      }
+    ]
+  },
+  {
+    "users": 50,
+    "requests": 1511,
+    "rps": 73.5,
+    "error_rate": 0.0,
+    "errors": {},
+    "p50_ms": 388.5,
+    "p95_ms": 2532.9,
+    "p99_ms": 3287.1,
+    "mean_ms": 670.2,
+    "slowest": [
+      {
+        "endpoint": "/analytics/business/",
+        "p95_ms": 3642.9,
+        "n": 149
+      },
+      {
+        "endpoint": "/inventory/batches/",
+        "p95_ms": 3150.2,
+        "n": 128
+      },
+      {
+        "endpoint": "/marketplace/listings/",
+        "p95_ms": 1829.2,
+        "n": 54
+      },
+      {
+        "endpoint": "/pickups/",
+        "p95_ms": 1608.4,
+        "n": 127
+      },
+      {
+        "endpoint": "/analytics/admin/",
+        "p95_ms": 1486.5,
+        "n": 25
+      }
+    ]
+  }
+]

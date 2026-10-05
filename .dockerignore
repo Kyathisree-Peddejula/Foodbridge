@@ -1,0 +1,7 @@
+**/__pycache__
+**/*.pyc
+backend/db.sqlite3
+backend/staticfiles
+frontend/build
+frontend/.dart_tool
+.git

@@ -1,0 +1,54 @@
+# Free replacement for a paid background worker.
+# Every 10 minutes: keeps the free Render API + HF Space awake and runs the expiry scan,
+# pickup reminders and listing expiry. Every 6 hours it also refreshes AI waste-risk scores.
+#
+# Repo → Settings → Secrets and variables → Actions → New repository secret:
+#   FOODBRIDGE_API_URL   https://foodbridge-api.onrender.com/api
+#   SERVICE_API_KEY      (same value as on Render)
+#   ML_URL               https://<user>-foodbridge-ml.hf.space        (optional)
+name: FoodBridge scheduled jobs
+
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+  workflow_dispatch:
+    inputs:
+      risk:
+        description: "Also refresh waste-risk scores now"
+        type: boolean
+        default: true
+
+jobs:
+  run-jobs:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    env:
+      API: ${{ secrets.FOODBRIDGE_API_URL }}
+      KEY: ${{ secrets.SERVICE_API_KEY }}
+      ML: ${{ secrets.ML_URL }}
+    steps:
+      - name: Check configuration
+        run: |
+          if [ -z "$API" ] || [ -z "$KEY" ]; then
+            echo "::warning::Set FOODBRIDGE_API_URL and SERVICE_API_KEY repository secrets to enable scheduled jobs."
+            exit 0
+          fi
+
+      - name: Wake services (free instances sleep when idle)
+        if: env.API != ''
+        run: |
+          curl -s -o /dev/null -w "API %{http_code} in %{time_total}s\n" --max-time 120 --retry 3 --retry-delay 10 "$API/health/" || true
+          if [ -n "$ML" ]; then
+            curl -s -o /dev/null -w "ML  %{http_code} in %{time_total}s\n" --max-time 120 --retry 2 "$ML/health" || true
+          fi
+
+      - name: Run expiry scan, reminders (and risk scoring every 6 h)
+        if: env.API != ''
+        run: |
+          RISK=0
+          H=$(date -u +%H); M=$(date -u +%M)
+          if [ $((10#$H % 6)) -eq 0 ] && [ $((10#$M)) -lt 10 ]; then RISK=1; fi
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.risk }}" = "true" ]; then RISK=1; fi
+          curl -sS --fail-with-body --max-time 300 --retry 2 --retry-delay 15 \
+               -X POST -H "X-Service-Key: $KEY" "$API/internal/run-jobs/?risk=$RISK"
+          echo

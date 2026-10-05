@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <base href="$FLUTTER_BASE_HREF">
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="FoodBridge – AI-powered food waste reduction and surplus redistribution platform">
+  <meta name="theme-color" content="#14452F">
+  <meta name="color-scheme" content="light">
+  <!-- installable on Android / desktop Chrome & Edge -->
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <!-- iOS / iPadOS home-screen app -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="FoodBridge">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <title>FoodBridge – AI Food Waste Reduction Platform</title>
+  <style>
+    html, body { margin: 0; height: 100%; background: #14452F; }
+    #splash { position: fixed; inset: 0; display: flex; flex-direction: column; align-items: center;
+      justify-content: center; color: #fff; font-family: Georgia, serif; gap: 14px; }
+    #splash img { width: 72px; height: 72px; border-radius: 20px; animation: pulse 1.2s ease-in-out infinite; }
+    @keyframes pulse { 50% { transform: scale(.9); opacity: .75; } }
+    .fb-toast { position: fixed; left: 50%; bottom: 20px; transform: translateX(-50%); z-index: 9999;
+      background: #0E2F20; color: #fff; font: 14px system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      padding: 10px 12px 10px 16px; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,.25);
+      display: none; align-items: center; gap: 12px; max-width: calc(100vw - 32px); }
+    .fb-toast button { background: #1FA463; color: #fff; border: 0; border-radius: 8px; padding: 8px 12px;
+      font-weight: 600; cursor: pointer; }
+    .fb-toast .x { background: transparent; color: #cfe; padding: 6px; }
+  </style>
+</head>
+<body>
+  <div id="splash" aria-label="Loading FoodBridge"><img src="icons/Icon-192.png" alt=""><div style="font-size:24px">FoodBridge</div></div>
+
+  <div id="fb-install" class="fb-toast" role="dialog" aria-label="Install FoodBridge">
+    <span id="fb-install-text">Install FoodBridge for quick, full-screen access.</span>
+    <button id="fb-install-btn">Install</button><button class="x" aria-label="Dismiss" onclick="fbHide('fb-install', true)">✕</button>
+  </div>
+  <div id="fb-update" class="fb-toast" role="status">
+    <span>A new version of FoodBridge is available.</span><button id="fb-update-btn">Reload</button>
+  </div>
+
+  <script>
+    window.addEventListener('flutter-first-frame', function () {
+      var s = document.getElementById('splash'); if (s) s.remove();
+    });
+    function fbShow(id) { document.getElementById(id).style.display = 'flex'; }
+    function fbHide(id, remember) {
+      document.getElementById(id).style.display = 'none';
+      if (remember) try { localStorage.setItem('fb-install-dismissed', Date.now()); } catch (e) {}
+    }
+    var dismissedRecently = (function () {
+      try { return Date.now() - (+localStorage.getItem('fb-install-dismissed') || 0) < 7 * 864e5; } catch (e) { return false; }
+    })();
+    var standalone = window.matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
+
+    // Install prompt (Chrome, Edge, Samsung Internet, Android)
+    var deferredPrompt = null;
+    window.addEventListener('beforeinstallprompt', function (e) {
+      e.preventDefault(); deferredPrompt = e;
+      if (!dismissedRecently && !standalone) setTimeout(function () { fbShow('fb-install'); }, 4000);
+    });
+    document.getElementById('fb-install-btn').addEventListener('click', async function () {
+      fbHide('fb-install');
+      if (deferredPrompt) { deferredPrompt.prompt(); await deferredPrompt.userChoice; deferredPrompt = null; }
+    });
+    window.addEventListener('appinstalled', function () { fbHide('fb-install', true); });
+    // iOS Safari has no install prompt - show the "Add to Home Screen" hint instead
+    var isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    if (isIOS && !standalone && !dismissedRecently) {
+      document.getElementById('fb-install-text').textContent = 'Install: tap Share, then "Add to Home Screen".';
+      document.getElementById('fb-install-btn').style.display = 'none';
+      setTimeout(function () { fbShow('fb-install'); }, 5000);
+    }
+
+    // Service worker: offline shell + update notice
+    window.fbClearApiCache = function () {
+      if (navigator.serviceWorker && navigator.serviceWorker.controller) navigator.serviceWorker.controller.postMessage('clearApiCache');
+    };
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', async function () {
+        try {
+          var reg = await navigator.serviceWorker.register('sw.js');
+          var promptUpdate = function (worker) {
+            fbShow('fb-update');
+            document.getElementById('fb-update-btn').onclick = function () { worker.postMessage('skipWaiting'); };
+          };
+          if (reg.waiting && navigator.serviceWorker.controller) promptUpdate(reg.waiting);
+          reg.addEventListener('updatefound', function () {
+            var w = reg.installing;
+            w && w.addEventListener('statechange', function () {
+              if (w.state === 'installed' && navigator.serviceWorker.controller) promptUpdate(w);
+            });
+          });
+          var reloaded = false;
+          navigator.serviceWorker.addEventListener('controllerchange', function () {
+            if (!reloaded && document.getElementById('fb-update').style.display === 'flex') { reloaded = true; location.reload(); }
+          });
+          setInterval(function () { reg.update(); }, 60 * 60 * 1000);   // check for a new version hourly
+        } catch (e) { console.warn('Service worker registration failed', e); }
+      });
+    }
+  </script>
+  <script src="flutter_bootstrap.js" async></script>
+</body>
+</html>

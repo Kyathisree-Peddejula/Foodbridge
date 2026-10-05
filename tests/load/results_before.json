@@ -1,0 +1,154 @@
+[
+  {
+    "users": 5,
+    "requests": 1138,
+    "rps": 75.8,
+    "error_rate": 0.0,
+    "errors": {},
+    "p50_ms": 55.7,
+    "p95_ms": 132.7,
+    "p99_ms": 207.4,
+    "mean_ms": 65.9,
+    "slowest": [
+      {
+        "endpoint": "/analytics/business/",
+        "p95_ms": 169.3,
+        "n": 135
+      },
+      {
+        "endpoint": "/analytics/ngo/",
+        "p95_ms": 144.3,
+        "n": 90
+      },
+      {
+        "endpoint": "/marketplace/listings/",
+        "p95_ms": 133.1,
+        "n": 46
+      },
+      {
+        "endpoint": "/pickups/",
+        "p95_ms": 125.3,
+        "n": 77
+      },
+      {
+        "endpoint": "/marketplace/listings/feed/",
+        "p95_ms": 111.9,
+        "n": 147
+      }
+    ]
+  },
+  {
+    "users": 10,
+    "requests": 1135,
+    "rps": 75.3,
+    "error_rate": 0.0,
+    "errors": {},
+    "p50_ms": 127.5,
+    "p95_ms": 185.8,
+    "p99_ms": 244.9,
+    "mean_ms": 132.5,
+    "slowest": [
+      {
+        "endpoint": "/analytics/business/",
+        "p95_ms": 205.3,
+        "n": 210
+      },
+      {
+        "endpoint": "/marketplace/listings/",
+        "p95_ms": 197.8,
+        "n": 83
+      },
+      {
+        "endpoint": "/expiry/alerts/",
+        "p95_ms": 192.1,
+        "n": 55
+      },
+      {
+        "endpoint": "/analytics/ngo/",
+        "p95_ms": 184.8,
+        "n": 54
+      },
+      {
+        "endpoint": "/marketplace/listings/feed/",
+        "p95_ms": 181.8,
+        "n": 75
+      }
+    ]
+  },
+  {
+    "users": 25,
+    "requests": 1312,
+    "rps": 85.7,
+    "error_rate": 0.0,
+    "errors": {},
+    "p50_ms": 288.8,
+    "p95_ms": 353.1,
+    "p99_ms": 374.0,
+    "mean_ms": 288.8,
+    "slowest": [
+      {
+        "endpoint": "/analytics/business/",
+        "p95_ms": 367.9,
+        "n": 165
+      },
+      {
+        "endpoint": "/inventory/scan/",
+        "p95_ms": 367.6,
+        "n": 19
+      },
+      {
+        "endpoint": "/analytics/admin/",
+        "p95_ms": 359.6,
+        "n": 86
+      },
+      {
+        "endpoint": "/marketplace/listings/",
+        "p95_ms": 359.4,
+        "n": 60
+      },
+      {
+        "endpoint": "/marketplace/listings/feed/",
+        "p95_ms": 355.9,
+        "n": 126
+      }
+    ]
+  },
+  {
+    "users": 50,
+    "requests": 1163,
+    "rps": 74.5,
+    "error_rate": 0.0,
+    "errors": {},
+    "p50_ms": 970.0,
+    "p95_ms": 1250.7,
+    "p99_ms": 1297.5,
+    "mean_ms": 657.7,
+    "slowest": [
+      {
+        "endpoint": "/analytics/ngo/",
+        "p95_ms": 1280.8,
+        "n": 38
+      },
+      {
+        "endpoint": "/analytics/business/",
+        "p95_ms": 1266.1,
+        "n": 201
+      },
+      {
+        "endpoint": "/inventory/scan/",
+        "p95_ms": 1264.4,
+        "n": 34
+      },
+      {
+        "endpoint": "/pickups/calendar/",
+        "p95_ms": 1264.4,
+        "n": 78
+      },
+      {
+        "endpoint": "/pickups/",
+        "p95_ms": 1262.5,
+        "n": 27
+      }
+    ]
+  }
+]

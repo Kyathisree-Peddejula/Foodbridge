@@ -1,0 +1,39 @@
+# Render.com blueprint - FREE plan (Dashboard → New → Blueprint → pick this GitHub repo).
+# Creates: free PostgreSQL + the Django API (Docker, free web service).
+#  * Frontend → Vercel, ML service → Hugging Face Spaces (free), background jobs → GitHub Actions cron.
+#  * Step-by-step: docs/DEPLOY_FREE.md
+databases:
+  - name: foodbridge-db
+    plan: free
+    databaseName: foodbridge
+    user: foodbridge
+
+services:
+  - type: web
+    name: foodbridge-api
+    runtime: docker
+    plan: free
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: .
+    healthCheckPath: /api/health/
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase: { name: foodbridge-db, property: connectionString }
+      - key: DJANGO_SECRET_KEY
+        generateValue: true
+      - key: SERVICE_API_KEY          # copy this value to the HF Space secret + GitHub secret
+        generateValue: true
+      - key: DJANGO_DEBUG
+        value: "false"
+      - key: SEED_DEMO
+        value: "true"
+      - key: WEB_CONCURRENCY          # 2 gunicorn workers fit in the free 512 MB
+        value: "2"
+      - key: TIME_ZONE
+        value: Asia/Kolkata
+      - key: ML_SERVICE_URL           # set after creating the HF Space, e.g. https://<user>-foodbridge-ml.hf.space
+        sync: false
+      - key: ML_SERVICE_TIMEOUT
+        value: "60"
+      - key: CSRF_TRUSTED_ORIGINS     # e.g. https://foodbridge.vercel.app (only needed for /admin)
+        sync: false
