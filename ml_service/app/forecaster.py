@@ -71,6 +71,8 @@ class ForecastService:
         if not self.prophet:
             return
         for cat in self.prophet.models:
+            if cat not in self.prophet.last_date:
+                continue
             start = pd.Timestamp(self.prophet.last_date[cat]) + pd.Timedelta(days=1)
             shape = self.prophet.weekly_shape(cat, 21, start)
             self.shapes[cat] = (shape, start.dayofweek)
