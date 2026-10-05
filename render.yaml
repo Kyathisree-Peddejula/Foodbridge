@@ -13,7 +13,7 @@ services:
     name: foodbridge-api
     runtime: docker
     plan: free
-    dockerfilePath: ./backend/Dockerfile
+    dockerfilePath: ./Dockerfile
     dockerContext: .
     healthCheckPath: /api/health/
     envVars:
