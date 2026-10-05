@@ -220,3 +220,6 @@ LOGGING = {
     "root": {"handlers": ["console"], "level": "INFO"},
     "loggers": {"django.request": {"handlers": ["console"], "level": "ERROR", "propagate": False}},
 }
+CORS_ALLOWED_ORIGINS = [
+    "https://foodbridge-frontend-mu.vercel.app",
+]
